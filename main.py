@@ -9,38 +9,68 @@ window = ctk.CTk()
 window.title("Tic Tac Toe")
 window.resizable(False, False)
 
-# set X , O on the buttons
-def set_title(row, column):
-    global currPlayer
-    btn = Board[row][column]
-    if btn.cget("text") == "":
-        btn.configure(text=currPlayer)
-        if currPlayer == "X":
-            btn.configure(text_color="#E55050")
-        else:
-            btn.configure(text_color="#4A90E2")
-        # Call Minimax Algorithm
-        currPlayer = "O" if currPlayer == "X" else "X"
-        label.configure(text=f"{currPlayer}'s Turn")
-
-
-def restart():
-    global currPlayer
-    currPlayer = "X"
-    for row in Board:
-        for btn in row:
-            btn.configure(text="")
-    label.configure(text=f"{currPlayer}'s Turn")
+Board = [['','',''],
+         ['','',''],
+         ['','','']]
+board_buttons = [[None, None, None], [None, None, None], [None, None, None]]
+game_over = False
 
 # Main Frame
 frame = ctk.CTkFrame(window)
 frame.pack(padx=20, pady=20)
 
-# Tic Tac Toe Label 
-label = ctk.CTkLabel(frame, text=f"{currPlayer}'s Turn", font=ctk.CTkFont(size=20, weight="bold"))
+    
+def change_Title():
+    winner = checkWinner(Board)
+    # winner = 'X'
+    if (winner == None):
+        title = f"{currPlayer}'s Turn"
+    elif winner == "Tie":
+        title = "Tie"
+    else :
+        title = f"{winner} Wins"
+    return title
+
+def set_title(row, column):
+    global game_over
+    if game_over == True:
+        return
+    global currPlayer
+    btn = board_buttons[row][column]
+    if btn.cget("text") == "":
+        btn.configure(text=currPlayer)
+        Board[row][column] = currPlayer
+        btn.configure(text_color="#E55050" if currPlayer == "X" else "#4A90E2")
+
+        winner = checkWinner(Board)
+        if winner:
+            label.configure(text=change_Title(),text_color="#F3C623")
+            for row in board_buttons:
+                for btn in row:
+                    btn.configure(state="disabled")
+            game_over = True 
+        else:
+            currPlayer = "O" if currPlayer == "X" else "X"
+            label.configure(text=change_Title())
+
+
+def restart():
+    global game_over
+    game_over = False
+    global currPlayer, Board
+    currPlayer = "X"
+    Board = [['','',''],
+             ['','',''],
+             ['','','']]
+    for row in board_buttons:
+        for btn in row:
+            btn.configure(text="", state="normal")
+    label.configure(text=f"{currPlayer}'s Turn")
+
+# # Tic Tac Toe Label 
+label = ctk.CTkLabel(frame, text=f"{change_Title()}", font=ctk.CTkFont(size=20, weight="bold"))
 label.grid(row=0, column=0, columnspan=3, pady=(0, 10))
-
-
+ #----------------------------------------------------------------------------------------------
 # Buttons Border
 buttons_frame = ctk.CTkFrame(frame, fg_color="#222222", border_color="#444444", border_width=2)
 buttons_frame.grid(row=1, column=0, columnspan=3, padx=8, pady=8)
@@ -61,7 +91,7 @@ for row in range(3):
             command=lambda r=row, c=column: set_title(r, c)
         )
         btn.grid(row=row, column=column, padx=8, pady=8)
-        Board[row][column] = btn
+        board_buttons[row][column] = btn
 
 
 # Restart Button
