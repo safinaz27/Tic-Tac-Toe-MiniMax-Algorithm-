@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from minimax import *
 import time
-ctk.set_appearance_mode("System") 
+ctk.set_appearance_mode("Dark") 
 ctk.set_default_color_theme("blue") 
 
 
@@ -54,10 +54,9 @@ def set_title(row, column):
             currPlayer = "O" if currPlayer == "X" else "X"
             label.configure(text=change_Title())
         if currPlayer == 'O':
-            window.after(800, AI)  # 2000 ميلي ثانية = 2 ثانية
+            window.after(800, AI) 
 
 def AI():
-    # time.sleep(2)
     row , col = AI_Move(Board)
     set_title(row,col)
     
@@ -102,7 +101,7 @@ for row in range(3):
 
 
 # Restart Button
-restart_btn = ctk.CTkButton(frame, text="Restart", fg_color="blue", hover_color="darkblue", command=restart)
+restart_btn = ctk.CTkButton(frame, text="Restart", fg_color="#4A90E2", hover_color="darkblue", command=restart)
 restart_btn.grid(row=4, column=0, columnspan=3, pady=(10, 0), sticky="we")
 
 # Center window in the Screen
