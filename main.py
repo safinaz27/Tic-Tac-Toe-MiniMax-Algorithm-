@@ -53,7 +53,7 @@ for row in range(3):
             text="",
             font=("Consolas",50,"bold"),
             width=120,
-            height=80,
+            height=100,
             fg_color="#2e2e2e",
             hover_color="#333333",
             border_color="#444444",
