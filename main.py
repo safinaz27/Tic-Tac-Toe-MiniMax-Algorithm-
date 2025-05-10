@@ -1,6 +1,6 @@
 import customtkinter as ctk
 from minimax import *
-
+import time
 ctk.set_appearance_mode("System") 
 ctk.set_default_color_theme("blue") 
 
@@ -31,6 +31,7 @@ def change_Title():
         title = f"{winner} Wins"
     return title
 
+
 def set_title(row, column):
     global game_over
     if game_over == True:
@@ -52,8 +53,14 @@ def set_title(row, column):
         else:
             currPlayer = "O" if currPlayer == "X" else "X"
             label.configure(text=change_Title())
+        if currPlayer == 'O':
+            window.after(800, AI)  # 2000 ميلي ثانية = 2 ثانية
 
-
+def AI():
+    # time.sleep(2)
+    row , col = AI_Move(Board)
+    set_title(row,col)
+    
 def restart():
     global game_over
     game_over = False

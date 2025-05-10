@@ -1,3 +1,6 @@
+import random
+import time
+
 currPlayer = 'X'
 Board = [['','',''],
          ['','',''],
@@ -25,5 +28,9 @@ def checkWinner(Board) :
 
     return "Tie"
 
-print(checkWinner(Board))
-    
+def AI_Move(Board):
+    empty_cells = [(i, j) for i in range(3) for j in range(3) if Board[i][j] == '']
+    if empty_cells:
+        i, j = random.choice(empty_cells)
+        return i , j
+# print(checkWinner(Board))
